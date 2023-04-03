@@ -18,10 +18,14 @@ function ToastProvider({ children }) {
       },
     ]);
   };
+  const dismissAllToasts = () => {
+    setToasts([]);
+  };
   const toastApi = {
     addToast,
     removeToast,
     toasts,
+    dismissAllToasts,
   };
 
   return (

@@ -11,7 +11,13 @@ const VARIANT_OPTIONS = ["notice", "warning", "success", "error"];
 function ToastPlayground() {
   const [message, setMessage] = React.useState("");
   const [variant, setVariant] = React.useState(VARIANT_OPTIONS[0]);
-  const { toasts, addToast, removeToast } = React.useContext(ToastContext);
+  const textAreaRef = React.useRef(null);
+  const { addToast } = React.useContext(ToastContext);
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    addToast(e, message, variant);
+    textAreaRef.current.focus();
+  };
 
   return (
     <div className={styles.wrapper}>
@@ -20,12 +26,9 @@ function ToastPlayground() {
         <h1>Toast Playground</h1>
       </header>
 
-      <ToastShelf toasts={toasts} removeToast={removeToast} />
+      <ToastShelf />
 
-      <form
-        className={styles.controlsWrapper}
-        onSubmit={(e) => addToast(e, message, variant)}
-      >
+      <form className={styles.controlsWrapper} onSubmit={handleSubmit}>
         <div className={styles.row}>
           <label
             htmlFor="message"
@@ -36,6 +39,7 @@ function ToastPlayground() {
           </label>
           <div className={styles.inputWrapper}>
             <textarea
+              ref={textAreaRef}
               id="message"
               required={true}
               minLength={1}
